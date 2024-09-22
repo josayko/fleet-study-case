@@ -1,0 +1,37 @@
+{
+  "name": "fleet-study-case",
+  "version": "1.0.0",
+  "description": "Study case for technical interview. Simple API for fetching movies data with frontend + SQL database conception.",
+  "type": "module",
+  "scripts": {
+    "dev:backend": "npm run dev -w backend",
+    "dev:frontend": "npm run dev -w frontend",
+    "dev": "concurrently \"npm run dev:*\"",
+    "build:backend": "npm run build -w backend",
+    "build:frontend": "npm run build -w frontend",
+    "build": "concurrently \"npm run build:*\"",
+    "start": "npm run start -w backend",
+    "clean": "rm -rf */dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josayko/fleet-study-case.git"
+  },
+  "keywords": [
+    "technical",
+    "interview"
+  ],
+  "author": "Jonny Saykosy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/josayko/fleet-study-case/issues"
+  },
+  "homepage": "https://github.com/josayko/fleet-study-case#README.md",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
