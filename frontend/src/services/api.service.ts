@@ -1,8 +1,23 @@
-export async function getAllMovies() {
-  const response = await fetch("/api/movies",{
-    method: 'GET'
+import { Movie, Pagination } from "../../../backend/src/interfaces/movie.dto";
+
+export async function getAllMovies(page?: number): Promise<Pagination> {
+  console.log("[front]: ", page);
+  const query = page ? `?page=${page}` : "";
+  const response = await fetch(`/api/movies${query}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
   });
-  const data = await response.json();
-  console.log(data);
-  return data;
+  return await response.json();
+}
+
+export async function getMovie(id: string): Promise<Movie> {
+  const response = await fetch(`/api/movies/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  return response.json();
 }
