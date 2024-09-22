@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import dotenv from "dotenv";
 
-import movieRouter from "./routes/movie.route.js";
+import movieRouter from "./routers/movie.router.js";
 
 const app = express();
 app.use(express.json());
@@ -17,7 +17,9 @@ if (NODE_ENV === "production") {
 
 const apiRouter = Router();
 app.use("/api", apiRouter);
+apiRouter.use("/movies", movieRouter); /* /api/movies */
 
-apiRouter.use("/movies", movieRouter);
-
-export default app;
+const port = process.env.NODE_PORT || 4000;
+app.listen(port, () =>
+  console.log(`App listening at http://localhost:${port}`)
+);
