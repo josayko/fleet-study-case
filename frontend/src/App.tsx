@@ -70,6 +70,7 @@ function App() {
     <Container
       maxWidth="lg"
       sx={{
+        minWidth: "600px",
         display: "flex",
         flexDirection: "column",
       }}
@@ -85,7 +86,9 @@ function App() {
             <div></div>
           )}
         </Grid2>
-        <Grid2 size={6}>{showMovieDetail(movie)}</Grid2>
+        <Grid2 sx={{ flexGrow: 1 }} size={6}>
+          {showMovieDetail(movie)}
+        </Grid2>
       </Grid2>
     </Container>
   );

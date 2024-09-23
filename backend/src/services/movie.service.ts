@@ -47,6 +47,7 @@ export const findAll = async (page?: string): Promise<Pagination> => {
         .filter((genre) => genre != undefined),
       release_date: movie.release_date,
       overview: movie.overview,
+      poster_path: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
     })),
     total_pages: data.total_pages > 500 ? 500 : data.total_pages,
     total_results: data.total_results,
@@ -73,5 +74,6 @@ export const findOne = async (id: string): Promise<Movie> => {
     genres: result.genres,
     release_date: result.release_date,
     overview: result.overview,
+    poster_path: `https://image.tmdb.org/t/p/w500/${result.poster_path}`,
   };
 };
