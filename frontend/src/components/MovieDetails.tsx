@@ -23,7 +23,7 @@ export function MovieDetails({ movie }: Props) {
           <Grid2
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "center",
             }}
             container
             spacing={2}
@@ -39,13 +39,18 @@ export function MovieDetails({ movie }: Props) {
                     <li key={genre.id}>{genre.name}</li>
                   ))}
                 </ul>
-                <p>{movie.overview}</p>
               </Typography>
             </Grid2>
             <Grid2 size={5}>
               <img src={movie.poster_path} style={{ width: "100%" }}></img>
             </Grid2>
           </Grid2>
+          <Typography
+            variant="body2"
+            sx={{ color: "text.secondary", marginTop: 2 }}
+          >
+            <p>{movie.overview}</p>
+          </Typography>
         </CardContent>
       </CardActionArea>
     </Card>
