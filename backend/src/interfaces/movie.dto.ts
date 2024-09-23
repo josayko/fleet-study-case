@@ -1,7 +1,7 @@
 export interface MovieFromTMDB {
   id: string;
   title: string;
-  genres: string[];
+  genre_ids: number[];
   release_date: string;
   overview: string;
 }
@@ -13,13 +13,20 @@ export interface PaginationFromTMDB {
   total_results: number;
 }
 
-export type Movie = Omit<MovieFromTMDB, "release_date"> & { date: string };
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export type Movie = Omit<MovieFromTMDB, "genre_ids"> & {
+  genres: Genre[];
+};
 export type Pagination = Omit<PaginationFromTMDB, "results"> & {
   results: Movie[];
 };
 
 // validation example, but could be better with a library like zod or ajv
-export function isMovieFromTMDB(data: unknown): data is MovieFromTMDB {
+export function isMovieFromTMDB(data: unknown): data is Movie {
   if (
     data instanceof Object &&
     "id" in data &&

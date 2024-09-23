@@ -1,7 +1,6 @@
 import { Movie, Pagination } from "../../../backend/src/interfaces/movie.dto";
 
 export async function getAllMovies(page?: number): Promise<Pagination> {
-  console.log("[front]: ", page);
   const query = page ? `?page=${page}` : "";
   const response = await fetch(`/api/movies${query}`, {
     method: "GET",

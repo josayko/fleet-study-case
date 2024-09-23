@@ -1,70 +1,92 @@
 import { useEffect, useState } from "react";
-import { Button, ButtonGroup, Container } from "@mui/material";
-import { getAllMovies } from "./services/api.service";
-import { Pagination } from "../../backend/src/interfaces/movie.dto";
+import { Box, Button, ButtonGroup, Container, Grid2 } from "@mui/material";
+import { getAllMovies, getMovie } from "./services/api.service";
+import { Movie, Pagination } from "../../backend/src/interfaces/movie.dto";
+import BasicPagination from "./components/BasicPagination";
+import SearchInput from "./components/SearchInput";
+import { MovieDetails } from "./components/MovieDetails";
 
 function App() {
   const [pagination, setPage] = useState<Pagination>();
-  const [pageButtons, setPageButtons] = useState<JSX.Element[]>([]);
+  const [movie, setMovie] = useState<Movie>();
 
   useEffect(() => {
     getAllMovies().then((data) => {
+      console.log(data.results);
       setPage(data);
-      computePageButtons(data);
+      if (data.results.length) {
+        console.log(data.results[0]);
+        setMovie(data.results[0]);
+      }
     });
   }, []);
 
-  const updatePage = (nb: number) => {
-    getAllMovies(nb).then((data) => {
-      setPage(data);
-      computePageButtons(data);
-    });
-  };
-
-  const pageButton = (nb: number) => {
-    return (
-      <Button key={nb} onClick={() => updatePage(nb)}>
-        {nb}
-      </Button>
-    );
-  };
-
-  const computePageButtons = (pagination: Pagination) => {
-    const buttons: JSX.Element[] = [];
-    if (pagination.page > 1) {
-      buttons.push(pageButton(pagination.page));
-    }
-    for (let i = pagination.page; i < 5; i++) {
-      if (i >= pagination.total_pages) {
-        break;
-      }
-      buttons.push(pageButton(i));
-    }
-    setPageButtons(buttons);
-  };
-
   const listMovies = () => {
+    const handleClick = async (id: string) => {
+      const movie = await getMovie(id);
+      console.log(movie);
+      setMovie(movie);
+    };
+
     if (pagination) {
       return (
-        <div>
-          <ul>
+        <Box
+          sx={{
+            display: "flex",
+            "& > *": {
+              flexGrow: 1,
+              marginY: 1,
+            },
+          }}
+        >
+          <ButtonGroup
+            orientation="vertical"
+            aria-label="Vertical button group"
+          >
             {pagination.results.map((movie) => (
-              <li key={movie.id}>{movie.title}</li>
+              <Button
+                key={movie.id}
+                size="small"
+                onClick={() => handleClick(movie.id)}
+              >
+                {movie.title}
+              </Button>
             ))}
-          </ul>
-          <ButtonGroup size="small" aria-label="Small button group">
-            {pageButtons}
           </ButtonGroup>
-        </div>
+        </Box>
       );
     }
     return <p>Loading...</p>;
   };
 
+  const showMovieDetail = (movie?: Movie) => {
+    if (!movie) {
+      return <></>;
+    }
+    return <MovieDetails movie={movie} />;
+  };
+
   return (
-    <Container maxWidth="sm">
+    <Container
+      maxWidth="lg"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <h1>Movie DB</h1>
-      {listMovies()}
+      <Grid2 container spacing={2}>
+        <Grid2 size={4}>
+          <SearchInput />
+          {listMovies()}
+          {pagination ? (
+            <BasicPagination count={pagination.total_pages} setPage={setPage} />
+          ) : (
+            <div></div>
+          )}
+        </Grid2>
+        <Grid2 size={6}>{showMovieDetail(movie)}</Grid2>
+      </Grid2>
     </Container>
   );
 }
