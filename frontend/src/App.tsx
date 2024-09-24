@@ -35,7 +35,7 @@ function App() {
       setMovie(movie);
     };
 
-    if (pagination) {
+    if (pagination?.results) {
       return (
         <Box
           sx={{

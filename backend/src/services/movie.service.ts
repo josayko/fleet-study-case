@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import {
-  isMovieFromTMDB,
+  isMovie,
   type Genre,
   type Movie,
   type Pagination,
@@ -43,8 +43,10 @@ export const findAll = async (page?: string): Promise<Pagination> => {
       id: movie.id,
       title: movie.title,
       genres: movie.genre_ids
-        .map((id) => genres.get(id) ?? undefined)
-        .filter((genre) => genre != undefined),
+        ? movie.genre_ids
+            .map((id) => genres.get(id) ?? undefined)
+            .filter((genre) => genre != undefined)
+        : [],
       release_date: movie.release_date,
       overview: movie.overview,
       poster_path: movie.poster_path
@@ -67,7 +69,7 @@ export const findById = async (id: string): Promise<Movie> => {
   };
   const response = await fetch(url, options);
   const movie = await response.json();
-  if (!isMovieFromTMDB(movie)) {
+  if (!isMovie(movie)) {
     throw new Error("Error fetching movie data");
   }
   return {
@@ -103,8 +105,10 @@ export const findAllByTitle = async (
       id: movie.id,
       title: movie.title,
       genres: movie.genre_ids
-        .map((id) => genres.get(id) ?? undefined)
-        .filter((genre) => genre != undefined),
+        ? movie.genre_ids
+            .map((id) => genres.get(id) ?? undefined)
+            .filter((genre) => genre != undefined)
+        : [],
       release_date: movie.release_date,
       overview: movie.overview,
       poster_path: movie.poster_path
