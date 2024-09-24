@@ -1,21 +1,28 @@
 import { useEffect, useState } from "react";
-import { Box, Button, ButtonGroup, Container, Grid2 } from "@mui/material";
-import { getAllMovies, getMovie } from "./services/api.service";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Grid2,
+  Typography,
+} from "@mui/material";
+import { getAllMovies } from "./services/api.service";
 import { Movie, Pagination } from "../../backend/src/interfaces/movie.dto";
 import BasicPagination from "./components/BasicPagination";
 import SearchInput from "./components/SearchInput";
 import { MovieDetails } from "./components/MovieDetails";
 
 function App() {
-  const [pagination, setPage] = useState<Pagination>();
+  const [pagination, setPagination] = useState<Pagination>();
+  const [page, setPage] = useState<number>(1);
   const [movie, setMovie] = useState<Movie>();
+  const [searchMemo, setSearchMemo] = useState("");
 
   useEffect(() => {
     getAllMovies().then((data) => {
-      console.log(data.results);
-      setPage(data);
+      setPagination(data);
       if (data.results.length) {
-        console.log(data.results[0]);
         setMovie(data.results[0]);
       }
     });
@@ -23,8 +30,8 @@ function App() {
 
   const listMovies = () => {
     const handleClick = async (id: string) => {
-      const movie = await getMovie(id);
-      console.log(movie);
+      // const movie = await getMovieById(id); /* Not necessary because we have all the movies of the selected page */
+      const movie = pagination?.results.find((movie) => movie.id === id);
       setMovie(movie);
     };
 
@@ -75,13 +82,27 @@ function App() {
         flexDirection: "column",
       }}
     >
-      <h1>Movie DB</h1>
+      <Typography variant="h2" component="h1">
+        Movie DB
+      </Typography>
       <Grid2 container spacing={2}>
         <Grid2 size={4}>
-          <SearchInput />
+          <SearchInput
+            searchMemo={searchMemo}
+            setSearchMemo={setSearchMemo}
+            setPage={setPage}
+            setPagination={setPagination}
+            setMovie={setMovie}
+          />
           {listMovies()}
           {pagination ? (
-            <BasicPagination count={pagination.total_pages} setPage={setPage} />
+            <BasicPagination
+              count={pagination.total_pages}
+              page={page}
+              setPagination={setPagination}
+              setPage={setPage}
+              searchMemo={searchMemo}
+            />
           ) : (
             <div></div>
           )}

@@ -1,7 +1,6 @@
 import {
   Card,
   CardActionArea,
-  CardMedia,
   CardContent,
   Typography,
   Grid2,
@@ -17,7 +16,12 @@ export function MovieDetails({ movie }: Props) {
     <Card>
       <CardActionArea>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h4"
+            component="h2"
+            sx={{ fontWeight: "bold" }}
+          >
             {movie.title}
           </Typography>
           <Grid2
@@ -30,26 +34,58 @@ export function MovieDetails({ movie }: Props) {
           >
             <Grid2 size={5}>
               <Typography
-                variant="body2"
-                sx={{ color: "text.secondary", marginTop: 2 }}
+                component="h3"
+                sx={{
+                  color: "text.secondary",
+                  marginTop: 2,
+                  listStyleType: "none",
+                  fontWeight: "bold",
+                }}
               >
-                <p>{movie.release_date}</p>
-                <ul>
+                Release date :
+              </Typography>
+              <Typography
+                sx={{
+                  color: "text.secondary",
+                }}
+              >
+                {new Date(movie.release_date).toLocaleDateString("en-US", {
+                  dateStyle: "long",
+                })}
+              </Typography>
+              <Typography
+                component="h3"
+                sx={{
+                  marginTop: 1,
+                  color: "text.secondary",
+                  fontWeight: "bold",
+                }}
+              >
+                Genres:
+              </Typography>
+              <ul style={{ marginTop: 0 }}>
+                <Typography
+                  sx={{
+                    color: "text.secondary",
+                    listStyleType: "circle",
+                  }}
+                >
                   {movie.genres.map((genre) => (
                     <li key={genre.id}>{genre.name}</li>
                   ))}
-                </ul>
-              </Typography>
+                </Typography>
+              </ul>
             </Grid2>
             <Grid2 size={5}>
-              <img src={movie.poster_path} style={{ width: "100%" }}></img>
+              {movie.poster_path ? (
+                <img src={movie.poster_path} style={{ width: "100%" }}></img>
+              ) : (
+                <div></div>
+              )}
             </Grid2>
           </Grid2>
-          <Typography
-            variant="body2"
-            sx={{ color: "text.secondary", marginTop: 2 }}
-          >
-            <p>{movie.overview}</p>
+          <Typography sx={{ color: "text.secondary", marginTop: 2 }}>
+            {movie.overview}
           </Typography>
         </CardContent>
       </CardActionArea>

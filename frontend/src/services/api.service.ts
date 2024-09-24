@@ -11,7 +11,7 @@ export async function getAllMovies(page?: number): Promise<Pagination> {
   return await response.json();
 }
 
-export async function getMovie(id: string): Promise<Movie> {
+export async function getMovieById(id: string): Promise<Movie> {
   const response = await fetch(`/api/movies/${id}`, {
     method: "GET",
     headers: {
@@ -19,4 +19,17 @@ export async function getMovie(id: string): Promise<Movie> {
     },
   });
   return response.json();
+}
+
+export async function getAllMoviesByTitle(
+  title: string,
+  page = 1
+): Promise<Pagination> {
+  const response = await fetch(`/api/movies?title=${title}&page=${page}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  return await response.json();
 }

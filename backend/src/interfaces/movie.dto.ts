@@ -4,7 +4,7 @@ export interface MovieFromTMDB {
   genre_ids: number[];
   release_date: string;
   overview: string;
-  poster_path: string;
+  poster_path?: string;
 }
 
 export interface PaginationFromTMDB {
