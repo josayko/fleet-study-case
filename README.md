@@ -80,7 +80,7 @@ $ docker exec -it dev-postgres bash
 
 ### Get started
 
-- The sales prediction use a simple linear progression model from the scikit-learn library written in Python
+- The sales prediction use a simple linear regression model from the scikit-learn library written in Python
 - The script has been developed and tested with `python 3.12.4`
 
 1. Create a virtual python environment with `venv`
@@ -110,7 +110,7 @@ pip install -r requirements.txt
 
 3. Ensure `DATABASE_URL` in `sales_prediction.py` script is correct and run the script
 
-- Depending on your data, it may take some time to get the results the first time the script is launched
+- Depending on your data, it may takes some time to get the results the first time the script is launched
 
 ```shell
 python sales_prediction.py
