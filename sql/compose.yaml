@@ -1,0 +1,34 @@
+# https://github.com/josayko-boilerplate/dev-postgres
+services:
+  postgres:
+    image: postgres:16.2-alpine
+    container_name: dev-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      APP_DB_USER: docker
+      APP_DB_PASS: docker
+      APP_DB_NAME: docker
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d/
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  pgadmin:
+    image: dpage/pgadmin4:8.4
+    container_name: dev-pgadmin
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.org
+      PGADMIN_DEFAULT_PASSWORD: S3cret
+    ports:
+      - 8080:80
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    links:
+      - postgres
+volumes:
+  postgres-data:
+  pgadmin-data:
